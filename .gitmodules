@@ -1,0 +1,7 @@
+[submodule "buildroot"]
+    path = buildroot
+	url =  git://git.buildroot.net/buildroot
+[submodule "shoehorn"]
+    path = shoehorn
+	url =  git@github.com:korneliuszo/shoehorn.git
+
