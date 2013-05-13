@@ -3,5 +3,5 @@
 	url =  git://git.buildroot.net/buildroot
 [submodule "shoehorn"]
     path = shoehorn
-	url =  git@github.com:korneliuszo/shoehorn.git
+	url =  git://github.com/korneliuszo/trackerboard.git
 
