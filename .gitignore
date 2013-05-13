@@ -2,4 +2,6 @@
 *.swp
 __pycache__
 tags
-
+buildroot-work
+output
+stamps

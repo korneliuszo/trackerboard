@@ -1,3 +1,6 @@
 #!/bin/bash
 
-ln -s ../buildroot-config/conf/.config buildroot/.config
+set -e
+
+git submodule init
+git submodule update
