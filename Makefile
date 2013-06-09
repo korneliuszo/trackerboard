@@ -14,28 +14,25 @@ buildroot-work/stamps/gcc_libs_target_installed:
 	make -C buildroot O=${PWD}/buildroot-work defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-ram
 	make -C buildroot-work toolchain
 
-linux-ram: stamps/linux-ram
+linux-ram: output/target/zImage-ram output/target/rootfs-ram.lzma
 
-stamps/linux-ram: buildroot-config/conf/.defconfig-ram buildroot-config/conf/linux-3.9.config-ram
+output/target/zImage-ram output/target/rootfs-ram.lzma: buildroot-config/conf/.defconfig-ram buildroot-config/conf/linux-3.9.config-ram
 	make -C buildroot O=${PWD}/buildroot-work defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-ram
-	make -C buildroot-work rootfs-cpio
 	make -C buildroot-work linux-reconfigure
+	make -C buildroot-work all
 	mkdir -p output/target/
 	cp buildroot-work/images/rootfs.cpio.lzma output/target/rootfs-ram.lzma
 	cp buildroot-work/images/zImage output/target/zImage-ram
-	touch stamps/linux-ram
 
-linux-rom: stamps/linux-rom
+linux-rom: output/target/zImage-rom output/target/rootfs-rom.lzma
 
-stamps/linux-rom: buildroot-config/conf/.defconfig-rom buildroot-config/conf/linux-3.9.config-rom
+output/target/zImage-rom output/target/rootfs-rom.lzma: buildroot-config/conf/.defconfig-rom buildroot-config/conf/linux-3.9.config-rom
 	make -C buildroot O=${PWD}/buildroot-work defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-rom
-	make -C buildroot-work rootfs-jffs2
 	make -C buildroot-work linux-reconfigure
+	make -C buildroot-work all
 	mkdir -p output/target/
 	cp buildroot-work/images/rootfs.jffs2 output/target/rootfs-rom.jffs2
 	cp buildroot-work/images/zImage output/target/zImage-rom
-	touch stamps/linux-rom
-
 
 COM_PORT ?= "/dev/ttyUSB0"
 
