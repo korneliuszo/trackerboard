@@ -1,8 +1,8 @@
 
 
-all: shoehorn
+all: shoehorn linux-ram linux-rom
 #buildroot
-.PHONY: shoehorn linux-ram
+.PHONY: shoehorn linux-ram linux-rom
 
 shoehorn: buildroot-work/stamps/gcc_libs_target_installed
 	make -C shoehorn CROSS=../buildroot-work/host/usr/bin/arm-linux-
