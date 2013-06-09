@@ -25,6 +25,18 @@ stamps/linux-ram: buildroot-config/conf/.defconfig-ram buildroot-config/conf/lin
 	cp buildroot-work/images/zImage output/target/zImage-ram
 	touch stamps/linux-ram
 
+linux-rom: stamps/linux-rom
+
+stamps/linux-rom: buildroot-config/conf/.defconfig-rom buildroot-config/conf/linux-3.9.config-rom
+	make -C buildroot O=${PWD}/buildroot-work defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-rom
+	make -C buildroot-work rootfs-jffs2
+	make -C buildroot-work linux-reconfigure
+	mkdir -p output/target/
+	cp buildroot-work/images/rootfs.jffs2 output/target/rootfs-rom.jffs2
+	cp buildroot-work/images/zImage output/target/zImage-rom
+	touch stamps/linux-rom
+
+
 COM_PORT ?= "/dev/ttyUSB0"
 
 boot-ram: linux-ram shoehorn
