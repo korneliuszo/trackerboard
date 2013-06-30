@@ -23,11 +23,6 @@ class atag_initrd2(atag_intnums):
         self.tagnum=0x54420005
         self.arglist=[start,size]
 
-class atag_none(atag_intnums):
-    def __init__(self):
-        self.tagnum=0x0
-        self.arglist=[]
-
 class atag_cmdline(object):
     def __init__(self,cmdline):
         self.tagnum=0x54410009
@@ -53,7 +48,7 @@ class ataglist(list):
                 ret=ret+tag.serialize()
         if not gotcore:
             raise ValueError("list does not include ATAG_CORE")
-        ret=ret+atag_none().serialize()
+        ret=ret+8*b'\x00'
         return ret
 
 if __name__ == '__main__':

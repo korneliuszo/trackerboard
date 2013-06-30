@@ -26,6 +26,7 @@ output/target/zImage-ram output/target/rootfs-ram.lzma: buildroot-config/conf/.d
 tracker-ram/Makefile: buildroot-config/conf/linux-3.9.config-ram
 	make -C buildroot O=${PWD}/tracker-ram defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-ram
 
+
 linux-rom: output/target/zImage-rom output/target/rootfs-rom.jffs2
 
 output/target/zImage-rom output/target/rootfs-rom.jffs2: buildroot-config/conf/.defconfig-rom tracker-rom/Makefile
@@ -41,7 +42,6 @@ tracker-rom/Makefile: buildroot-config/conf/linux-3.9.config-rom
 
 COM_PORT ?= "/dev/ttyUSB0"
 
-boot-ram: linux-ram shoehorn
-	./output/host/bin/shoehorn --tracker --loader ./output/host/bin/loader.bin --kernel output/target/zImage-ram --initrd output/target/rootfs-ram.lzma --port ${COM_PORT}
-
+boot-ram: linux-ram
+	./boot/run-ram.py ${COM_PORT} output/target/
 
