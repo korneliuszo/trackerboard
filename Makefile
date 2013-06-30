@@ -4,15 +4,15 @@ all: shoehorn linux-ram linux-rom
 #buildroot
 .PHONY: shoehorn linux-ram linux-rom
 
-shoehorn: buildroot-work/stamps/gcc_libs_target_installed
-	make -C shoehorn CROSS=../buildroot-work/host/usr/bin/arm-linux-
+shoehorn: tracker-ram/stamps/gcc_libs_target_installed
+	make -C shoehorn CROSS=../tracker-ram/host/usr/bin/arm-linux-
 	mkdir -p output/host/bin
 	cp shoehorn/shoehorn output/host/bin
 	cp shoehorn/loader.bin output/host/bin
 
-buildroot-work/stamps/gcc_libs_target_installed:
-	make -C buildroot O=${PWD}/buildroot-work defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-ram
-	make -C buildroot-work toolchain
+tracker-ram/stamps/gcc_libs_target_installed:
+	make -C buildroot O=${PWD}/tracker-ram defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-ram
+	make -C tracker-ram toolchain
 
 linux-ram: output/target/zImage-ram output/target/rootfs-ram.lzma
 
@@ -28,7 +28,7 @@ tracker-ram/Makefile: buildroot-config/conf/linux-3.9.config-ram
 
 linux-rom: output/target/zImage-rom output/target/rootfs-rom.jffs2
 
-output/target/zImage-ram output/target/rootfs-rom.jffs2: buildroot-config/conf/.defconfig-rom tracker-rom/Makefile
+output/target/zImage-rom output/target/rootfs-rom.jffs2: buildroot-config/conf/.defconfig-rom tracker-rom/Makefile
 	make -C tracker-rom linux-reconfigure
 	make -C tracker-rom all
 	mkdir -p output/target/
