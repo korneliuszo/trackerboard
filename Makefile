@@ -16,23 +16,28 @@ buildroot-work/stamps/gcc_libs_target_installed:
 
 linux-ram: output/target/zImage-ram output/target/rootfs-ram.lzma
 
-output/target/zImage-ram output/target/rootfs-ram.lzma: buildroot-config/conf/.defconfig-ram buildroot-config/conf/linux-3.9.config-ram
-	make -C buildroot O=${PWD}/buildroot-work defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-ram
-	make -C buildroot-work linux-reconfigure
-	make -C buildroot-work all
+output/target/zImage-ram output/target/rootfs-ram.lzma: buildroot-config/conf/.defconfig-ram tracker-ram/Makefile
+	make -C tracker-ram linux-reconfigure
+	make -C tracker-ram all
 	mkdir -p output/target/
-	cp buildroot-work/images/rootfs.cpio.lzma output/target/rootfs-ram.lzma
-	cp buildroot-work/images/zImage output/target/zImage-ram
+	cp tracker-ram/images/rootfs.cpio.lzma output/target/rootfs-ram.lzma
+	cp tracker-ram/images/zImage output/target/zImage-ram
 
-linux-rom: output/target/zImage-rom output/target/rootfs-rom.lzma
+tracker-ram/Makefile: buildroot-config/conf/linux-3.9.config-ram
+	make -C buildroot O=${PWD}/tracker-ram defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-ram
 
-output/target/zImage-rom output/target/rootfs-rom.lzma: buildroot-config/conf/.defconfig-rom buildroot-config/conf/linux-3.9.config-rom
-	make -C buildroot O=${PWD}/buildroot-work defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-rom
-	make -C buildroot-work linux-reconfigure
-	make -C buildroot-work all
+linux-rom: output/target/zImage-rom output/target/rootfs-rom.jffs2
+
+output/target/zImage-ram output/target/rootfs-rom.jffs2: buildroot-config/conf/.defconfig-rom tracker-rom/Makefile
+	make -C tracker-rom linux-reconfigure
+	make -C tracker-rom all
 	mkdir -p output/target/
-	cp buildroot-work/images/rootfs.jffs2 output/target/rootfs-rom.jffs2
-	cp buildroot-work/images/zImage output/target/zImage-rom
+	cp tracker-rom/images/rootfs.jffs2 output/target/rootfs-rom.jffs2
+	cp tracker-rom/images/zImage output/target/zImage-rom
+
+tracker-rom/Makefile: buildroot-config/conf/linux-3.9.config-rom
+	make -C buildroot O=${PWD}/tracker-rom defconfig BR2_DEFCONFIG=${PWD}/buildroot-config/conf/.defconfig-rom
+
 
 COM_PORT ?= "/dev/ttyUSB0"
 
